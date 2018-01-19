@@ -17,14 +17,14 @@
         <form method="post" action="save.php">
         <input name="username" type="text" value="" placeholder="Фамилия Имя Отчество">
         <?php
-        require_once ("config/database.php");
-        $mysqli = new mysqli($dbip,$dblogin,$dbpassword,$dbname);
-        $sql = "SELECT * FROM vopros LIMIT 10";
-        $result = $mysqli -> query($sql);
-        $i = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            switch ($row["type"]){
-                case 1:
+        require_once ("config/database.php"); //подключаем конфигурационный файл базы данных
+        $mysqli = new mysqli($dbip,$dblogin,$dbpassword,$dbname); //создаём обхект базы данных
+        $sql = "SELECT * FROM vopros LIMIT 10"; //формируем запрос на выборку теста
+        $result = $mysqli -> query($sql); //преобразуем в результат 
+        $i = 0; //создаём итератор 
+        while ($row = mysqli_fetch_assoc($result)) { //преобразуем результат в ассоциативный массив пока он имеет место быть
+            switch ($row["type"]){ //выбираем по типу вопроса
+                case 1: //сли это вопрос с радиокнопкой
                     echo '
             <div class="block">
                 <p class="vopros">' . $row["vopros"] . '</p>
@@ -36,9 +36,9 @@
                 <input name="' . $i . '" value="3" id="' . ($row["id"] * $i +2)  . '" type="radio">
                 <label for="' . ($row["id"] * $i +3)  . '">'. $row["otv4"] .'</label>
                 <input name="' . $i . '" value="4" id="' . ($row["id"] * $i +3)  . '" type="radio">
-            </div>';
+            </div>'; //тогда выводим с радиокнопкой
                     break;
-                case 2:
+                case 2: //если вопрос с чекбоксом
                     echo '
             <div class="block">
                 <p class="vopros">' . $row["vopros"] . '</p>
@@ -50,10 +50,10 @@
                 <input name="' . $i . '[]" value="3" id="' . ($row["id"] * $i +2)  . '" type="checkbox">
                 <label for="' . ($row["id"] * $i +3)  . '">'. $row["otv4"] .'</label>
                 <input name="' . $i . '[]" value="4" id="' . ($row["id"] * $i +3)  . '" type="checkbox">
-            </div>';
+            </div>'; //тогда выводим с чекбоксом
                     break;
             }
-        $i++;
+        $i++; //увеличиваем итератор
         }
             ?>
         <input type="submit" value="Закончить тест">
